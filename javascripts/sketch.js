@@ -80,6 +80,7 @@ let outputCaptionBox, outputColorBox;
 let propInput = -1;
 let propOutput = -1;
 let propLabel = -1;
+let leftSideButtons, savetoDriveDiv;
 // Hide right click menu
 document.addEventListener('contextmenu', event => event.preventDefault());
 let cnv; // Canvas variable
@@ -100,15 +101,19 @@ function setup() { // jshint ignore:line
     }, false);
 
     document.title = 'New Sketch - LogiJS';
-    console.log(windowWidth);
-    console.log(windowHeight);
 
+    //<div class="g-savetodrive" data-src="//example.com/path/to/myfile.pdf" data-filename="My Statement.pdf" data-sitename="LogiJS"></div>
+    savetoDriveDiv = createDiv('');
+    savetoDriveDiv.class('g-savetodrive');
+    savetoDriveDiv.attribute('data-src', '//example.com/path/to/myfile.pdf');
+    savetoDriveDiv.attribute('data-filename', 'My Statement.pdf');
+    savetoDriveDiv.attribute('data-sitename', 'LogiJS');
 
     //Div for the Left Side Buttons
-    let leftSideButtons = createDiv(" ");
-    leftSideButtons.elt.className = "scrollBoxLeft";
-    let height = (windowHeight - 74 - 32 - 15);
-    leftSideButtons.elt.style.height = height.toString() + "px";
+    leftSideButtons = createDiv('');
+    leftSideButtons.class('scrollBoxLeft');
+    let leftSideHeight = (windowHeight - 121);
+    leftSideButtons.elt.style.height = leftSideHeight.toString() + 'px';
     leftSideButtons.elt.style.margin = '55px 0px';
 
     // Adds text 'Basic'
