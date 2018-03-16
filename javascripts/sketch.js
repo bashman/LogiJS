@@ -108,6 +108,10 @@ function setup() { // jshint ignore:line
     savetoDriveDiv.attribute('data-src', '//example.com/path/to/myfile.pdf');
     savetoDriveDiv.attribute('data-filename', 'My Statement.pdf');
     savetoDriveDiv.attribute('data-sitename', 'LogiJS');*/
+    gapi.savetodrive.render(
+        'container',
+        {"src": "//condescending-darwin-54ab7a.netlify.com/sketches/cpu.json", "filename": "newname.json", "sitename": "LogiJS"}
+    );
 
     //Div for the Left Side Buttons
     leftSideButtons = createDiv('');
