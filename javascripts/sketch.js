@@ -108,7 +108,6 @@ function setup() { // jshint ignore:line
     savetoDriveDiv.attribute('data-src', '//example.com/path/to/myfile.pdf');
     savetoDriveDiv.attribute('data-filename', 'My Statement.pdf');
     savetoDriveDiv.attribute('data-sitename', 'LogiJS');*/
-    document.getElementById('g-drive').setAttribute('data-filename', 'test.json');
 
     //Div for the Left Side Buttons
     leftSideButtons = createDiv('');
