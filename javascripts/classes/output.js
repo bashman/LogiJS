@@ -10,8 +10,9 @@ function Output(x, y, transform, colr) {
     this.lbl = '';
     this.colr = colr; // 0 = red, 1 = yellow, 2 = green, 3 = blue
     this.marked = false;
+    this.alpha = 255;
     this.highColor = color(HRED, HGREEN, HBLUE); // Color for high outputs (red)
-    this.lowColor = color(50, 50, 50); // Color for low outputs (dark grey)
+    this.lowColor = color(50, 50, 50, this.alpha); // Color for low outputs (dark grey)
     this.markColor = color(0, 100, 50);   // Color for marked inputs
 
     // ClickBox is used for input and global
@@ -114,6 +115,10 @@ Output.prototype.show = function () {
         fill(this.markColor);
     } else {
         fill(this.lowColor);
+    }
+    // Makes preview symbol more transparent
+    if (previewSymbol !== null && !this.state && !this.marked && !mouseIsPressed){
+        fill(50, 50, 50, this.alpha);
     }
     // Draw the circle that represents the output
     ellipse(this.x, this.y, this.w, this.h);

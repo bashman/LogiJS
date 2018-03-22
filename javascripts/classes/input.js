@@ -16,8 +16,9 @@ function Input(x, y, transform) {
 
     this.transform = transform;
 
+    this.alpha = 255;
     this.highColor = color(HRED, HGREEN, HBLUE); // Color for high inputs (red)
-    this.lowColor = color(50, 50, 50);   // Color for low inputs (dark grey)
+    this.lowColor = color(50, 50, 50, this.alpha);   // Color for low inputs (dark grey)
     this.markColor = color(0, 100, 50);   // Color for marked inputs
 
     this.isTop = false;
@@ -144,8 +145,18 @@ Input.prototype.show = function () {
         fill(this.highColor);
     } else if (this.marked) {
         fill(this.markColor);
-    } else {
+    } else if (!this.state && !this.marked && mouseIsPressed){
         fill(this.lowColor);
+    } else{
+        fill(50,50,50, this.alpha);
+        // Make the preview symbol of button look the same as the clicked version
+        if(previewSymbol !== null && addType === 'input' && newIsButton === true){
+            rect(this.x + 10, this.y + 10, this.w / 3, this.h / 3);
+        }
+        // Make the preview symbol of clock look the same as the clicked version
+        else if(previewSymbol !== null && addType === 'input' && newIsClock === true){
+            ellipse(this.x + 15, this.y + 15, this.w / 2, this.h / 2);
+        }
     }
     // Draw the rectangle that represents the input
     rect(this.x, this.y, this.w, this.h);

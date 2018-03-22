@@ -402,6 +402,8 @@ function setup() { // jshint ignore:line
     propertiesButton.mousePressed(function () {
         setControlMode('none');
         setPropMode(true);
+        previewSymbol = null;
+        reDraw();
     });
     propertiesButton.elt.className = "button";
 
@@ -433,7 +435,10 @@ function setup() { // jshint ignore:line
     // Button to import as custom
     ascustomButton = createButton('Import');
     ascustomButton.position(windowWidth - 70, 4);
-    ascustomButton.mousePressed(function () { return customClicked(textInput.value() + '.json'); });
+    ascustomButton.mousePressed(function () { 
+        previewSymbol = null;
+        return customClicked(textInput.value() + '.json'); 
+    });
     ascustomButton.elt.className = "button";
 
     /*
@@ -511,6 +516,7 @@ function customClicked(filename) {
 function saveClicked() {
     selectMode = 'none';
     showSClickBox = false;
+    previewSymbol = null;
     saveSketch(textInput.value() + '.json');
     document.title = textInput.value() + ' - LogiJS';
 }
@@ -519,6 +525,7 @@ function saveClicked() {
 function loadClicked() {
     selectMode = 'none';
     showSClickBox = false;
+    previewSymbol = null;
     loadSketch(textInput.value() + '.json');
     reDraw();
 }
@@ -544,6 +551,7 @@ function newClicked() {
     textInput.value('');
     textInput.attribute('placeholder', 'New Sketch');
     findLines();
+    previewSymbol = null;
     reDraw();
 }
 
@@ -582,6 +590,8 @@ function pushSelectAction(dx, dy) {
 function wiringClicked() {
     setControlMode('addWire'); // Activates wire adding, leaving all other modes
     wireMode = 'none'; // Resets the wiring mode
+    previewSymbol = null;
+    reDraw();
 }
 
 function deleteClicked() {
@@ -627,6 +637,8 @@ function deleteClicked() {
     //    }
     //} else {
     setControlMode('delete');
+    previewSymbol = null;
+    reDraw();
     //}
 }
 
@@ -639,6 +651,19 @@ function labelChanged() {
 
 function newGateInputNumber() {
     gateInputCount = parseInt(gateInputSelect.value());
+    // Ensure that the correct preview gate is displayed when user selection changes
+    switch(gateType){
+        case 'and': previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'and', '&');
+                    previewSymbol.alpha = 100;
+                    break;
+        case 'or':  previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'or', '≥1');
+                    previewSymbol.alpha = 100;
+                    break;   
+        case 'xor': previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'xor', '=1');
+                    previewSymbol.alpha = 100;
+                    break;           
+    }
+    
 }
 
 function newDirection() {
@@ -647,6 +672,18 @@ function newDirection() {
         case 'Up': gateDirection = 3; break;
         case 'Left': gateDirection = 2; break;
         case 'Down': gateDirection = 1; break;
+    }
+    // Ensure that the correct preview gate is displayed when user selection changes
+    switch(gateType){
+        case 'and': previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'and', '&');
+                    previewSymbol.alpha = 100;
+                    break;
+        case 'or':  previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'or', '≥1');
+                    previewSymbol.alpha = 100;
+                    break;   
+        case 'xor': previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'xor', '=1');
+                    previewSymbol.alpha = 100;
+                    break;           
     }
 }
 
@@ -664,6 +701,8 @@ function newClockspeed() {
 */
 function simClicked() {
     if (!simRunning) {
+        previewSymbol = null;
+        reDraw();
         startSimulation();
     } else {
         endSimulation();
@@ -681,6 +720,8 @@ function andClicked() {
     labelGateInputs.show();
     directionSelect.show();
     labelDirection.show();
+    previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'and', '&');
+    previewSymbol.alpha = 100;
 }
 
 function orClicked() {
@@ -691,6 +732,8 @@ function orClicked() {
     labelGateInputs.show();
     directionSelect.show();
     labelDirection.show();
+    previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'or', '≥1');
+    previewSymbol.alpha = 100;
 }
 
 function xorClicked() {
@@ -701,6 +744,8 @@ function xorClicked() {
     labelGateInputs.show();
     directionSelect.show();
     labelDirection.show();
+    previewSymbol = new LogicGate(mouseX, mouseY, transform, gateDirection, gateInputCount, 1, 'xor', '=1');
+    previewSymbol.alpha = 100;
 }
 
 function inputClicked() {
@@ -708,6 +753,8 @@ function inputClicked() {
     newIsClock = false;
     setControlMode('addObject');
     addType = 'input';
+    previewSymbol = new Input(mouseX, mouseY, transform);
+    previewSymbol.alpha = 100;
 }
 
 function buttonClicked() {
@@ -715,6 +762,8 @@ function buttonClicked() {
     newIsClock = false;
     setControlMode('addObject');
     addType = 'input';
+    previewSymbol = new Input(mouseX, mouseY, transform);
+    previewSymbol.alpha = 100;
 }
 
 function clockClicked() {
@@ -722,11 +771,15 @@ function clockClicked() {
     newIsClock = true;
     setControlMode('addObject');
     addType = 'input';
+    previewSymbol = new Input(mouseX, mouseY, transform);
+    previewSymbol.alpha = 100;
 }
 
 function outputClicked() {
     setControlMode('addObject');
     addType = 'output';
+    previewSymbol = new Output(mouseX, mouseY, transform, 0);
+    previewSymbol.alpha = 100;
 }
 
 // diodeClick is toggling the diodes,
@@ -734,18 +787,24 @@ function outputClicked() {
 function diodeClicked() {
     setControlMode('addObject');
     addType = 'diode';
+    previewSymbol = null;
+    reDraw();
 }
 
 // Starts the selection process
 function startSelect() {
     setControlMode('select');
     selectMode = 'none';
+    previewSymbol = null;
+    reDraw();
 }
 
 // Triggered when a label should be added
 function labelButtonClicked() {
     setControlMode('addObject');
     addType = 'label';
+    previewSymbol = null;
+    reDraw();
 }
 
 /*
@@ -886,6 +945,7 @@ function addLabel() {
     newLabel.updateClickBox();
     labels.push(newLabel);
     pushUndoAction('addLabel', [], newLabel);
+    previewSymbol = null;
     reDraw();
 }
 
@@ -1239,6 +1299,10 @@ function showElements() {
     //console.log("Drawing wires took " + (t1 - t0) + " milliseconds.")
     for (const elem of gates) {
         elem.show();
+    }
+
+    if(previewSymbol !== null){
+        previewSymbol.show();
     }
 
     for (const elem of customs) {

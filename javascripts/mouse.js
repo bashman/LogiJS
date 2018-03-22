@@ -9,6 +9,8 @@ let origY = 0;
 let lockElements = false; // For delete mode, ensures that wires can be deleted without
 // accidentally deleting other elements
 
+let previewSymbol = null;
+
 /*
     Triggers when the mouse wheel is used
 */
@@ -106,6 +108,22 @@ function mouseMoved() {
     }
     if (!hand) {
         cursor(ARROW);
+    }
+
+    // Draws a preview of the gate, so the user will see where the gate will be placed
+    // First checks whether and/or/xor gates or switch/button/clock are chosen 
+    if(ctrlMode === 'addObject' && (addType === 'gate' && (gateType === 'and' || 
+        gateType === 'or' || gateType === 'xor') || addType === 'input' || addType === 'output') && !mouseOverGUI()){
+        // Prevents that a gate is created over an existing gate
+        for (let i = 0; i < gates.length; i++) {
+            if ((gates[i].x === Math.round(((mouseX - GRIDSIZE / 2) / transform.zoom - transform.dx) / GRIDSIZE) * GRIDSIZE) &&
+                (gates[i].y === Math.round(((mouseY - GRIDSIZE / 2) / transform.zoom - transform.dy) / GRIDSIZE) * GRIDSIZE)) {
+                return;
+            }
+        }
+        // Changes preview gate coordinates according to mouse position
+        previewSymbol.setCoordinates(mouseX / transform.zoom - transform.dx, mouseY / transform.zoom - transform.dy);
+        reDraw();
     }
 }
 
