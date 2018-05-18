@@ -534,6 +534,23 @@ function setup() { // jshint ignore:line
     reDraw();
 }
 
+function launchSaveToOneDrive() {
+    var odOptions = {
+        clientId: "08dbb894-6137-4a7f-a12c-0ddcf37554ad",
+        action: "save",
+        sourceInputElementId: "fileUploadControl",
+        sourceUri: "",
+        fileName: "file.txt",
+        openInNewWindow: true,
+        advanced: {},
+        success: function(files) { /* success handler */ },
+        progress: function(p) { /* progress handler */ },
+        cancel: function() { /* cancel handler */ },
+        error: function(e) { /* error handler */ }
+      }
+    OneDrive.save(odOptions);
+}
+
 // Credits to https://stackoverflow.com/questions/2405355/how-to-pass-a-parameter-to-a-javascript-through-a-url-and-display-it-on-a-page (Mic)
 function urlParam(name, w) {
     w = w || window;
