@@ -382,12 +382,14 @@ function setup() { // jshint ignore:line
     wireButton.mousePressed(wiringClicked);
     //wireButton.elt.style.width = "117px";
     wireButton.elt.className = "button";
+    wireButton.hide();
 
     // Activates the delete mode (objects and wires)
     deleteButton = createButton('Delete');
     deleteButton.position(226, 4);
     deleteButton.mousePressed(deleteClicked);
     deleteButton.elt.className = "button";
+    deleteButton.hide();
 
     // Starts and stops the simulation
     simButton = createButton('Start');
@@ -395,6 +397,7 @@ function setup() { // jshint ignore:line
     simButton.position(299, 4);
     simButton.mousePressed(simClicked);
     simButton.elt.className = "button";
+    simButton.hide();
 
     // Undos the last action
     undoButton = createButton('Undo');
@@ -547,7 +550,7 @@ function launchSaveToOneDrive() {
         progress: function(p) { /* progress handler */ },
         cancel: function() { /* cancel handler */ },
         error: function(e) { /* error handler */ }
-      }
+      };
     OneDrive.save(odOptions);
 }
 
