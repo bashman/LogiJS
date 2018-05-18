@@ -298,7 +298,7 @@ function setup() { // jshint ignore:line
     labelDirection.elt.style.margin = '3px 0px 0px 0px';
     labelDirection.elt.className = 'label';
     labelDirection.parent(leftSideButtons);
-    
+
 
     directionSelect = createSelect();
     directionSelect.hide();
@@ -532,6 +532,25 @@ function setup() { // jshint ignore:line
         loadSketch(loadfile + '.json');
     }
     reDraw();
+    // open the modal
+    netlifyIdentity.open();
+
+    // Get the current user:
+    const user = netlifyIdentity.currentUser();
+
+    // Bind to events
+    netlifyIdentity.on("init", user => console.log(user));
+    netlifyIdentity.on("login", user => console.log(user));
+    netlifyIdentity.on("logout", () => console.log("Logged out"));
+    netlifyIdentity.on("error", err => console.error("Logged out"));
+    netlifyIdentity.on("open", () => console.log("Widget opened"));
+    netlifyIdentity.on("close", () => console.log("Widget closed"));
+
+    // Close the modal
+    netlifyIdentity.close();
+
+    // Logout the user
+    netlifyIdentity.logout();
 }
 
 // Credits to https://stackoverflow.com/questions/2405355/how-to-pass-a-parameter-to-a-javascript-through-a-url-and-display-it-on-a-page (Mic)
